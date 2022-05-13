@@ -5,6 +5,7 @@ import os
 
 from typing import Dict
 from typing import Tuple
+import tools.mapper
 
 from PathFilter import PathFilter
 
@@ -39,7 +40,7 @@ class SmplObjects(object):
     ,"m_avg_R_Wrist"
     ,"m_avg_L_Hand"
     ,"m_avg_R_Hand"]
-    def __init__(self, read_path):
+    def __init__(self, read_path, mapper_path = './tools/map.csv'):
         self.files = {}
 
         # For AIST naming convention
@@ -52,6 +53,10 @@ class SmplObjects(object):
             self.files[filename] = {"smpl_poses":data["smpl_poses"],
                                     "smpl_trans":data["smpl_trans"]}
         self.keys = [key for key in self.files.keys()]
+        mapper = tools.mapper.get_mapper(mapper_path)
+        for i in range(len(self.joints)):
+            if mapper.get(self.joints[i]):
+                self.joints[i] = mapper.get(self.joints[i])
 
     def __len__(self):
         return len(self.keys)

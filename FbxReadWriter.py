@@ -76,6 +76,9 @@ class FbxReadWrite(object):
         smpl_poses = smpl_params["smpl_poses"]
         for idx, name in enumerate(names):
             node = lRootNode.FindChild(name)
+            if node == None:
+                print(name)
+                continue
             rotvec = smpl_poses[:, idx*3:idx*3+3]
             _euler = []
             for _f in range(rotvec.shape[0]):
@@ -127,6 +130,7 @@ class FbxReadWrite(object):
     def writeFbx(self, write_base:str, filename:str):
         if os.path.isdir(write_base) == False:
             os.makedirs(write_base, exist_ok=True)
+        filename = filename.replace('\\','')
         write_path = os.path.join(write_base, filename.replace(".pkl", ""))
         print ("Writing to {}".format(write_path))
         lResult = SaveScene(self.lSdkManager, self.lScene, write_path)
