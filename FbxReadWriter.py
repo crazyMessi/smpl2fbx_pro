@@ -131,7 +131,7 @@ class FbxReadWrite(object):
         if os.path.isdir(write_base) == False:
             os.makedirs(write_base, exist_ok=True)
         filename = filename.replace('\\','')
-        write_path = os.path.join(write_base, filename.replace(".pkl", ""))
+        write_path = os.path.join(write_base, filename.replace(".pkl", "").replace(".","").replace("/","").replace("\\",""))
         print ("Writing to {}".format(write_path))
         lResult = SaveScene(self.lSdkManager, self.lScene, write_path)
 
